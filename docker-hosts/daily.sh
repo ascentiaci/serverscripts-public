@@ -27,7 +27,6 @@ if ! docker system prune -a -f; then
     exit 1
 else
     echo "Docker cleanup succeeded"
-    echo "Docker cleanup failed"
     curl 'https://uptime.888ltd.ca/api/push/RqHXLf4ntT?status=up&msg=Docker%20Cleanup%20Succeeded'
 fi
 
