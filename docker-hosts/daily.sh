@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#schedule via crontab
+# * * */1 * * $HOME/serverscripts-public/docker-hosts/daily.sh
+
+echo "Running daily.sh"
+
+echo "Cleaning Docker"
+
 if ( command -v docker > /dev/null)
 then
     echo "Docker is installed"
@@ -11,6 +18,17 @@ fi
 
 echo "Cleaning Docker"
 
-docker system prune -a -f
+
+
+
+if ! docker system prune -a -f; then
+    echo "Docker cleanup failed"
+    curl 'https://uptime.888ltd.ca/api/push/RqHXLf4ntT?status=down&msg=Docker%20Cleanup%20Failed'
+    exit 1
+else
+    echo "Docker cleanup succeeded"
+    echo "Docker cleanup failed"
+    curl 'https://uptime.888ltd.ca/api/push/RqHXLf4ntT?status=up&msg=Docker%20Cleanup%20Succeeded'
+fi
 
 echo "Done"
